@@ -2,14 +2,19 @@
   <v-app>
 
     <v-toolbar fixed app :clipped-left="clipped">
-          <v-alert v-model="gameOver" color="success" dismissable>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
+
+      <v-dialog v-model="gameOver" lazy absolute width="50%">
+        <span class="display-4">
       <span v-if="winner == 1"> Congrats {{ p1name }} </span>
       <span v-else> Congrats {{ p2name }} </span>
-    </v-alert>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+        </span>
+
+      </v-dialog>
+
       <v-dialog v-model="editDialog" lazy absolute width="50%">
-                  <v-btn icon slot="activator">
-                    <v-icon dark> control_point </v-icon>
+                  <v-btn slot="activator" class="green lighten-1 white--text">
+                    New Game
                   </v-btn>
                   <v-card>
                     <v-toolbar>
@@ -21,10 +26,8 @@
                         <v-form ref="form">
                           <v-text-field v-model="p1name" label="Player 1"></v-text-field>
                           <v-text-field v-model="p2name" label="Player 2"></v-text-field>
-                          <v-radio-group v-model="p1serving">
-                          <v-radio label="Player 1" value="true"></v-radio>
-                          <v-radio label="Player 2" value="false"></v-radio>
-                          </v-radio-group>
+                          
+                          <v-checkbox label="Is Player 1 Serving?" v-model="p1serving"></v-checkbox>
 
 
                           <v-btn @click="editDialog = false" class="red white--text">Close</v-btn>
@@ -43,26 +46,21 @@
     <v-content>
       <v-container fluid>
         <v-card>
-          <v-toolbar>
-            <v-toolbar-title>
-              Scorekeeper
-            </v-toolbar-title>
-          </v-toolbar>
 
           <!-- p1 -->
           <v-layout row-wrap>
           <v-flex xs-6>
-          <v-card>
-            <v-toolbar>
-              <v-toolbar-title>
-                 <span v-if="p1serving"> <v-icon>nature</v-icon></span> {{ p1name }} 
+          <v-card class="blue lighten-5">
+            <v-toolbar class="blue">
+              <v-toolbar-title class="white--text">
+                 {{ p1name }} <span v-if="p1serving"> <v-icon class="white--text">radio_button_checked</v-icon></span> 
               </v-toolbar-title>
             </v-toolbar>
             <v-flex xs-4></v-flex>
-            <span class="display-4 text-xs-center">{{score1}}
+            <span class="display-4 text-xs-center"> <span class="blue--text"><strong>{{score1}}</strong></span>
               <br>
-              <v-btn @click="score1 -= 1">DECEREMENT</v-btn>
-              <v-btn @click="addPoints(1)">INCEREMENT</v-btn>
+              <v-btn @click="score1 -= 1" class="red white--text">DECEREMENT</v-btn>
+              <v-btn @click="addPoints(1)" class="green white--text">INCEREMENT</v-btn>
               
             </span>
             <v-flex xs-4></v-flex>
@@ -71,17 +69,17 @@
 
           <!-- p2 -->
           <v-flex xs-6>
-          <v-card>
-            <v-toolbar>
-              <v-toolbar-title>
-                <span v-if="p1serving == false"> <v-icon>nature</v-icon></span> {{ p2name }} 
+          <v-card class="red lighten-5">
+            <v-toolbar class="red">
+              <v-toolbar-title class="white--text">
+                {{ p2name }}<span v-if="p1serving == false"> <v-icon class="white--text">radio_button_checked</v-icon></span> 
               </v-toolbar-title>
             </v-toolbar>
             <v-flex xs-4></v-flex>
-            <span class="display-4 text-xs-center">{{score2}}
+            <span class="display-4 text-xs-center"><span class="red--text"><strong>{{score2}}</strong></span>
               <br>
-              <v-btn @click="score2 -= 1">DECEREMENT</v-btn>
-             <v-btn @click="addPoints(2)">INCEREMENT</v-btn>
+              <v-btn @click="score2 -= 1" class="red white--text">DECEREMENT</v-btn>
+             <v-btn @click="addPoints(2)" class="green white--text">INCEREMENT</v-btn>
             </span>
             <v-flex xs-4></v-flex>
           </v-card>
@@ -92,9 +90,7 @@
         </v-card>
       </v-container>
     </v-content>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
-    </v-footer>
+
   </v-app>
 </template>
 
